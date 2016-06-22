@@ -12,35 +12,79 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
+    
+    func connectServer(completion:() -> Void) {
+        // 初始化AppKey
+        RCIM.sharedRCIM().initWithAppKey("bmdehs6pdo4us")
+        
+        // 用Token测试连接
+        RCIM.sharedRCIM().connectWithToken("kXYcfb0UbTmagoJFU3hE2e2e8AIuLTE9cSIJq8PMTt7jHFDmQJpF4Ekpa/T1rwd6vjtrx2tAWWIoay6lev19cUnzTMGDjB6i", success: { (_) in
+                let currentUserInfo = RCUserInfo(userId: "chetaofeng", name: "天行贱", portrait: "http://p1.image.hiapk.com/uploads/allimg/130927/23-13092G51228-51.jpg")
+                RCIMClient.sharedRCIMClient().currentUserInfo = currentUserInfo
+            
+                //在主线程中异步执行刷新界面等其他操作
+                dispatch_async(dispatch_get_main_queue(), { 
+                    completion()
+                })
+            }, error: { (_) in
+                print("连接失败")
+            }) { 
+                 print("token不正确或已失效")
+        }
+    }
+ 
+    // appkey:bmdehs6pdo4us         App Secret:EzzbIBytE6Sw
+    //{"code":200,"userId":"che","token":"BobctVIbQ3eMRINLx/9mB+2e8AIuLTE9cSIJq8PMTt7jHFDmQJpF4N0/QEGD6aDz9+RCSSlK7fnLcUg9C03c4A=="}
+    //{"code":200,"userId":"cheche","token":"lh+ABnaaLmfMs1PTpDwLTshcSSuP2wnuS1T05hmHVXI3dQGLzM0jfHftWuh9d7QLtJ5R/kK+T/h+o1CNYxn31A=="}
+    //{"code":200,"userId":"admin","token":"edvQLGN/x5uDcRwMWCSQ2vY0gT7IerK2crEQqjquAxVPtjvQHDaoWviNCkOh6Ulx6Br9SquPAkF4I2Re6yWVkQ=="}
+    //{"code":200,"userId":"chetaofeng","token":"kXYcfb0UbTmagoJFU3hE2e2e8AIuLTE9cSIJq8PMTt7jHFDmQJpF4Ekpa/T1rwd6vjtrx2tAWWIoay6lev19cUnzTMGDjB6i"}
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+//        RCIM.sharedRCIM().userInfoDataSource = self  // 设置用户信息提供者
+        
+        //获取LeanCloud授权
+        //chetaofeng@163.com    54Ctf123./
+        AVOSCloud.setApplicationId("d2oiSScgPKgWKhDNGG9xCNkC-gzGzoHsz", clientKey: "ozbRCRYOXVm5pltH2voFjN9W")
+        
         return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+     
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
     }
 
     func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
     }
 
 
+//    func getUserInfoWithUserId(userId: String!, completion: ((RCUserInfo!) -> Void)!) {
+//        let userInfo = RCUserInfo()
+//        
+//        let query = AVQuery(className: "T_USER")
+//        query.whereKey("userName", equalTo: userId)
+//        query.getFirstObjectInBackgroundWithBlock({ (existUser, error) in
+//            if existUser != nil {
+//                userInfo.name =  existUser.objectForKey("userName") as! String
+//                userInfo.portraitUri = "http://p1.image.hiapk.com/uploads/allimg/130927/23-13092G51228-51.jpg"
+//            }else {
+//                print(error)
+//            }
+//        })
+//        
+//        return completion(userInfo)
+//    }
 }
 
